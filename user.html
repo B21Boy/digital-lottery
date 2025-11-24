@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Lottery</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="bg-lights">
+    <span class="light"></span>
+    <span class="light"></span>
+    <span class="light"></span>
+    <span class="light"></span>
+    <span class="light"></span>
+    <span class="light"></span>
+    <span class="light"></span>
+    <span class="light"></span>
+    <span class="light"></span>
+    <span class="light"></span>
+    <span class="light"></span>
+    <span class="light"></span>
+    <span class="moving-object"></span>
+</div>
+
+<div class="card">
+    <h1>🎫 Play Lottery</h1>
+
+    <div class="section-title">Current Lottery</div>
+    <p id="roundName">Loading...</p>
+    <p id="ticketPrice"></p>
+    <p id="statusText"></p>
+    <!-- Countdown display and Live button -->
+    <div style="margin-top:12px;text-align:center;">
+        <div id="countdownTimer" style="font-weight:700;font-size:16px;color:#00ff66;margin-bottom:8px;">--:--:--</div>
+        <button id="liveBtn" style="max-width:200px;margin:0 auto;">Go Live</button>
+    </div>
+
+    <hr>
+
+    <div class="section-title">Buy Ticket</div>
+    <div class="input-group">
+    <input id="username" placeholder=" " required>
+        <label for="username">Your Name</label>
+    </div>
+        <!-- Phone number input -->
+        <div class="input-group">
+            <input id="phone" type="tel" pattern="[0-9]{10}" maxlength="10" placeholder=" " required oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)">
+            <label for="phone">Phone Number</label>
+        </div>
+    <div class="input-group">
+    <input id="number" type="number" min="1" max="99" step="1" pattern="^[1-9][0-9]?$" placeholder=" " required>
+        <label for="number">Pick a number (1-99)</label>
+    <div style="height:18px;"></div>
+    </div>
+
+    <!-- Payment instructions and file input -->
+    <div style="margin-bottom:8px;">
+        <div style="color:#00ffcc;font-size:15px;margin-bottom:4px;"><b>Telebirr:</b> 0960625242</div>
+        <div style="color:#ffd700;font-size:15px;"><b>CBE:</b> 1000528475977</div>
+        <div style="color:#aaa;font-size:13px;margin-top:4px;">Send payment to one of the above numbers, then select the payment method and upload your payment proof below.</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:18px;margin-bottom:18px;">
+        <span style="font-size:15px;color:#00ff66;white-space:nowrap;">Payment Method</span>
+        <select id="paymentMethod" style="width:140px;min-width:100px;max-width:180px;padding:8px 10px;font-size:15px;border-radius:8px;border:1.5px solid #00ff6633;background:#101010;color:#00ffcc;outline:none;box-shadow:inset 0 0 10px rgba(0,255,102,0.07);transition:border-color 0.2s,box-shadow 0.2s;appearance:none;cursor:pointer;">
+            <option value="telebirr">Telebirr</option>
+            <option value="cbe">CBE</option>
+        </select>
+        <!-- Make select required for HTML5 validation -->
+        <script>document.getElementById('paymentMethod').setAttribute('required', 'required');</script>
+        </select>
+    </div>
+    <div class="input-group">
+        <label for="paymentFile" style="top:0;left:0;transform:none;position:static;background:transparent;font-size:15px;color:#00ff66;display:block;margin-bottom:8px;">Payment Proof (screenshot/receipt)</label>
+    <input id="paymentFile" type="file" accept="image/*,application/pdf" style="margin-top:6px;" required>
+        <div id="paymentPreviewWrap" style="margin-top:10px;display:none;">
+            <img id="paymentPreview" style="max-width:100%;max-height:120px;border-radius:8px;box-shadow:0 2px 8px #ffd70055;display:block;margin:0 auto;" />
+        </div>
+    </div>
+    <button onclick="buyTicket()">Buy Ticket</button>
+    <p id="buyMessage"></p>
+
+    <hr>
+
+    <div class="section-title">Results</div>
+    <p id="winningNum">Not announced yet</p>
+
+    <hr>
+
+    <div class="section-title">Publish Video (optional)</div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <button id="publishBtn" type="button">Start Publishing</button>
+        <video id="publishPreview" autoplay muted playsinline style="width:120px;height:90px;border-radius:8px;background:#000;object-fit:cover;display:none;"></video>
+    </div>
+
+    <hr>
+
+    <div class="section-title">History</div>
+    <button onclick="loadHistory()">Show My Tickets</button>
+    <pre id="historyList"></pre>
+
+</div>
+
+
+<script type="module" src="user.js"></script>
+<script>
+// Show preview for payment proof image
+const paymentFileInput = document.getElementById('paymentFile');
+const paymentPreview = document.getElementById('paymentPreview');
+const paymentPreviewWrap = document.getElementById('paymentPreviewWrap');
+if (paymentFileInput && paymentPreview && paymentPreviewWrap) {
+    paymentFileInput.addEventListener('change', function() {
+        const file = paymentFileInput.files && paymentFileInput.files[0];
+        if (file && file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                paymentPreview.src = e.target.result;
+                paymentPreviewWrap.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            paymentPreviewWrap.style.display = 'none';
+            paymentPreview.src = '';
+        }
+    });
+}
+</script>
+</body>
+</html>

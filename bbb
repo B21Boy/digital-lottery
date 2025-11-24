@@ -1,0 +1,102 @@
+// // Use AgoraChat provided by the loaded script (or shim). Do NOT use require() in browser.
+// // const AgoraChat = require("./Agora-chat");
+
+// let APP_ID="4e65854fa216492cb281c2defd76667e"
+
+
+// let token=null;
+// let uid = Math.floor(Math.random()*10000)
+
+// let client;
+// let channel;
+
+// let localStream;
+// let remoteStream;
+// let peerConnection;
+
+// const servers = {
+//     iceServers: [
+//         {
+//             urls: ['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302']
+//         }
+//     ]
+// };
+
+// let init = async () => {
+//     client=await AgoraChat.createInstance(APP_ID);
+//     await client.login({
+//         uid,token
+//     })
+//     channel = client.createChannel('main')
+//     await channel.join()
+
+//     // Prefer channel-level events (shim provides channel.on). If client.on exists use it,
+//     // otherwise fall back to channel.on to avoid "client.on is not a function" errors.
+//     if (channel && typeof channel.on === 'function') {
+//         channel.on('MemberJoined', handleUserJoined);
+//         channel.on('MessageFromPeer', handleMessageFromPeer);
+//     } else {
+//         console.warn('channel.on is not available; falling back to client.on if present');
+//         if (client && typeof client.on === 'function') {
+//             client.on('MessageFromPeer', handleMessageFromPeer);
+//         }
+//     }
+
+
+//     localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+//     document.getElementById('user-1').srcObject = localStream;
+
+    
+// };
+// let handleMessageFromPeer=async (Message,memberID)=>{
+// console.log('A new user jined the channel', memberID)
+// createOffer(memberID)
+// }
+
+
+
+// let handleUserJoined= async (memberId)=>{
+//     console.log('A new user joined the channel', memberId)
+  
+//     createOffer(memberId);
+// }
+
+// let createOffer = async (memberId) => {
+//     peerConnection = new RTCPeerConnection(servers);
+
+//     remoteStream = new MediaStream();
+//     document.getElementById('user-2').srcObject = remoteStream;
+
+//     // FIXED
+//     localStream.getTracks().forEach((track) => {
+//         peerConnection.addTrack(track, localStream);
+//     });
+
+//     peerConnection.ontrack = (event) => {
+//         event.streams[0].getTracks().forEach((track) => {
+//             remoteStream.addTrack(track);
+//         });
+//     };
+
+//     peerConnection.onicecandidate = async (event) => {
+//         if (event.candidate) {
+//             console.log("new ice candidate:", event.candidate);
+//         }
+//     };
+
+//     let offer = await peerConnection.createOffer();
+//     await peerConnection.setLocalDescription(offer);
+
+//      if (client && typeof client.sendMessageToPeer === 'function') {
+//          client.sendMessageToPeer({ text: 'hry !!!' }, memberId);
+//      } else if (channel && typeof channel._emit === 'function') {
+//          // Shim exposes a simple _emit on channel for local demo; use it as a fallback so
+//          // demo handlers still receive a message object. This does not send to a remote
+//          // peer — it's only for same-page/local testing with the shim.
+//          channel._emit('MessageFromPeer', { text: 'hry !!!', from: uid, to: memberId });
+//      } else {
+//          console.warn('No sendMessageToPeer implementation available; message not sent');
+//      }
+// };
+
+// init();
