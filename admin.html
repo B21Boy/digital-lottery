@@ -23,9 +23,9 @@
 </div>
 
 <div class="card">
+    <h1 id="adminHeader" style="display:none;">⚙️ Admin Panel</h1>
 
-    <h1>⚙️ Admin Panel</h1>
-
+    <div id="adminContent" style="display:none;">
     <div class="section-title">Create New Round</div>
     <div class="input-group">
         <input id="roundName" placeholder=" ">
@@ -45,7 +45,6 @@
 
     <hr>
 
-    <div class="section-title">Declare Winner</div>
     <div class="section-title">Schedule Live Time</div>
     <div class="input-group">
         <input id="countdownAt" type="datetime-local" placeholder=" ">
@@ -53,14 +52,27 @@
     </div>
     <button onclick="setCountdown()">Set Live Time</button>
     <button onclick="clearCountdown()">Clear Live Time</button>
-    <button onclick="resetDraw()" style="margin-left:8px;background:#ff6666;color:#000;">Reset Draw</button>
     <p id="countdownInfo"></p>
 
-    <div class="input-group">
-        <input id="winningNumber" type="number" min="0" max="99" placeholder=" ">
-        <label for="winningNumber">Winning Number</label>
+    <div style="margin-bottom:8px;">
+        <button onclick="location.href='vedio-stream/streamer.html'" style="background:#072; color:#dfffe9; padding:8px 12px; border-radius:8px; border:none; font-weight:800;">Go to Streamer ▶</button>
     </div>
-    <button onclick="setWinningNumber()">Submit Winning Number</button>
+    <div class="section-title">Declare Winner</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+        <div class="input-group" style="flex:1;min-width:90px;">
+            <input id="winningNumber1" type="number" min="0" max="99" placeholder=" " />
+            <label for="winningNumber1">1. winner</label>
+        </div>
+        <div class="input-group" style="flex:1;min-width:90px;">
+            <input id="winningNumber2" type="number" min="0" max="99" placeholder=" " />
+            <label for="winningNumber2">2. winner</label>
+        </div>
+        <div class="input-group" style="flex:1;min-width:90px;">
+            <input id="winningNumber3" type="number" min="0" max="99" placeholder=" " />
+            <label for="winningNumber3">3. winner</label>
+        </div>
+    </div>
+    <button onclick="setWinningNumber()">Submit Winning Numbers</button>
     <p id="winnerText"></p>
 
     <hr>
@@ -69,9 +81,17 @@
     <button onclick="viewBuyers()">Show Buyers</button>
     <pre id="buyerList"></pre>
 
+    <hr>
+
+    <div class="section-title">Rounds</div>
+    <button onclick="viewRounds()">Load Rounds</button>
+    <div id="roundsList" style="margin-top:12px;white-space:normal;"></div>
+
     <div class="section-title">Winners</div>
     <button onclick="viewWinners()">Show Winners</button>
     <pre id="winnerList"></pre>
+
+    </div> <!-- /adminContent -->
 
 </div>
 
