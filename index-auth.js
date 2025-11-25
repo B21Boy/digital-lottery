@@ -28,7 +28,6 @@ async function loginAdmin(username, password) {
 
 // DOM helpers (support inline form on admin-register-login.html)
 const loginBtn = document.getElementById('indexLoginBtn');
-const registerBtn = document.getElementById('indexRegisterBtn');
 const userInput = document.getElementById('indexAdminUser');
 const passInput = document.getElementById('indexAdminPass');
 const msgEl = document.getElementById('indexAuthMsg');
@@ -39,17 +38,7 @@ function showMsg(m, err) {
     msgEl.innerText = m;
 }
 
-if (registerBtn) registerBtn.addEventListener('click', async () => {
-    const u = (userInput.value || '').trim();
-    const p = (passInput.value || '').trim();
-    if (!u || !p) { showMsg('Enter username and password', true); return; }
-    try {
-        await registerAdmin(u, p);
-        if (userInput) userInput.value = '';
-        if (passInput) passInput.value = '';
-        showMsg('Registered successfully. Now please login with your credentials.');
-    } catch (e) { showMsg(e.message || String(e), true); }
-});
+// Registration disabled in this build: admin users should be created manually or via another flow.
 
 if (loginBtn) loginBtn.addEventListener('click', async () => {
     const u = (userInput.value || '').trim();
