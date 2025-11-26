@@ -46,9 +46,9 @@ if (loginBtn) loginBtn.addEventListener('click', async () => {
     if (!u || !p) { showMsg('Enter username and password', true); return; }
     try {
         await loginAdmin(u, p);
-        localStorage.setItem('adminUser', u);
-        showMsg('Login successful. Redirecting...');
-        setTimeout(() => { window.location.href = 'admin.html'; }, 600);
+    localStorage.setItem('adminUser', u);
+    showMsg('Login successful. Redirecting...');
+    setTimeout(() => { window.location.href = 'admin.html?allow=1'; }, 600);
     } catch (e) { showMsg(e.message || String(e), true); }
 });
 

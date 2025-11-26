@@ -500,15 +500,24 @@ function updateCountdownStatusFromInput() {
 
 // show existing countdown info on load and require admin login
 document.addEventListener('DOMContentLoaded', async () => {
-    // require admin to be logged in via admin-register-login.html
-    const savedAdmin = localStorage.getItem('adminUser');
-    if (!savedAdmin) {
-        // redirect to admin register/login page
+    // Force login every time: unless caller explicitly sets ?allow=1 we redirect to login page.
+    // This ensures admin must re-enter credentials on the login page each time they open admin.html.
+    const params = new URLSearchParams(window.location.search);
+    const allow = params.get('allow');
+    if (allow !== '1') {
+        // clear any previous admin session to enforce fresh login
+        try { localStorage.removeItem('adminUser'); } catch (e) {}
         window.location.href = 'admin-register-login.html';
         return;
     }
 
-    // verify saved admin exists and has role 'admin'
+    // If we get here, login just occurred and redirected with ?allow=1 — validate the saved admin and show UI.
+    const savedAdmin = localStorage.getItem('adminUser');
+    if (!savedAdmin) {
+        // nothing to validate, force back to login
+        window.location.href = 'admin-register-login.html';
+        return;
+    }
     try {
         const uDoc = await getDoc(doc(db, 'users', savedAdmin));
         if (!uDoc.exists()) {
@@ -524,6 +533,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         // valid admin, show admin UI
         showAdminUI(savedAdmin);
+        // remove the allow flag from the URL to avoid reuse
+        if (window.history && window.history.replaceState) {
+            const url = new URL(window.location.href);
+            url.searchParams.delete('allow');
+            window.history.replaceState({}, '', url.pathname + url.search + url.hash);
+        }
     } catch (e) {
         console.warn('admin validation failed', e);
         localStorage.removeItem('adminUser');
